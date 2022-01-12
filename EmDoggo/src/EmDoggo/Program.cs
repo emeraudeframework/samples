@@ -51,6 +51,7 @@ public class Program
                         
                         setup.AdminOptions.SetAdminMenusBuilder<AdminMenusBuilder>();
 
+                        setup.PortalGatewayOptions.PortalUrls.Add("http://localhost:3000");
                         setup.PortalGatewayOptions.GatewayId = builder.Configuration["PortalGateway:GatewayId"];
                     })
                     .EmeraudePostConfigure(settingsBuilder =>

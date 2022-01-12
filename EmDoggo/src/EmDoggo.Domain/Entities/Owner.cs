@@ -11,12 +11,6 @@ public class Owner : Entity
         Dogs = new HashSet<Dog>();
     }
 
-    public Owner(Guid userId)
-        : this()
-    {
-        UserId = userId;
-    }
-
     public Guid UserId { get; set; }
 
     public string Address { get; set; }

@@ -13,32 +13,41 @@ namespace EmDoggo.Admin.EmPages.Food;
 public class FoodEmPageDataManager : EmPageDataManager<FoodEmPageModel>
 {
     private readonly ISystemFilesService systemFilesService;
+    private readonly IRootsService rootsService;
 
     public FoodEmPageDataManager(
         FoodEmPageDataStrategy dataStrategy,
         IMediator mediator,
         IEmPageService emPageService,
-        ISystemFilesService systemFilesService)
+        ISystemFilesService systemFilesService,
+        IRootsService rootsService)
         : base(dataStrategy, mediator, emPageService)
     {
         this.systemFilesService = systemFilesService;
+        this.rootsService = rootsService;
     }
 
     protected override async Task BeforeCreateAsync(FoodEmPageModel model)
     {
-        await this.HandleFormFileAsync(model);
+        this.HandleFormFile(model);
+        await Task.CompletedTask;
     }
 
     protected override async Task BeforeEditAsync(string modelId, FoodEmPageModel model)
     {
-        await this.HandleFormFileAsync(model);
+        this.HandleFormFile(model);
+        await Task.CompletedTask;
     }
 
-    private async Task HandleFormFileAsync(FoodEmPageModel model)
+    private void HandleFormFile(FoodEmPageModel model)
     {
         var targetDirectory = Path.Combine("uploads", "images");
         var fileId = model.ImageUrl;
-        if (Guid.TryParse(fileId, out var parsedFileId) && this.systemFilesService.MoveTemporaryFileToPublicDirectory(parsedFileId, targetDirectory))
+        if (!string.IsNullOrWhiteSpace(fileId) && File.Exists(this.rootsService.GetPathFromPublicRoot(fileId.Substring(1))))
+        {
+            return;
+        }
+        else if (Guid.TryParse(fileId, out var parsedFileId) && this.systemFilesService.MoveTemporaryFileToPublicDirectory(parsedFileId, targetDirectory))
         {
             var fileName = this.systemFilesService.GetTemporaryFile(parsedFileId);
             model.ImageUrl = UrlHelpers.BuildRelativeUrl("uploads", "images", fileName);

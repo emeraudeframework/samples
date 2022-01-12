@@ -1,6 +1,9 @@
 using System.Threading.Tasks;
+using EmDoggo.Admin.EmPages.Owner;
 using Emeraude.Application.Admin.EmPages.Components.Renderers;
 using Emeraude.Application.Admin.EmPages.Schema;
+using Emeraude.Application.Admin.EmPages.Shared;
+using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Defaults.Extensions;
 using Emeraude.Defaults.ValuePipes;
 
@@ -87,15 +90,61 @@ public class UserEmPageSchema : IEmPageSchema<UserEmPageModel>
                     {
                         item.SetComponent<EmPageFlagRenderer>();
                     });
+
+                detailsView.IncludeFeature(feature =>
+                {
+                    feature.Route = "owner";
+                    feature.Title = "Owner";
+                    feature.MapEmPageModel<OwnerEmPageModel>(
+                        x => x.UserId,
+                        x => x.Id,
+                        EmPageFeatureReferenceDirection.FromSourceToParent);
+                    
+                    feature.Breadcrumbs.Add(new EmPageBreadcrumb
+                    {
+                        Title = settings.Title,
+                        IsActive = true,
+                        Href = $"/admin/{settings.Route}",
+                    });
+
+                    feature.Breadcrumbs.Add(new EmPageBreadcrumb
+                    {
+                        Title = EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Name),
+                        Order = 1,
+                        IsActive = true,
+                        Href = $"/admin/{settings.Route}/{EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}",
+                    });
+
+                    feature.Breadcrumbs.Add(new EmPageBreadcrumb
+                    {
+                        Title = "Owner",
+                        Order = 2,
+                        IsActive = false,
+                        Href = $"/admin/{settings.Route}/{EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}/owner",
+                    });
+                });
+                
+                detailsView.PageActions.Add(new EmPageAction
+                {
+                    Name = "Owner",
+                    Order = 2,
+                    RelativeUrlFormat = $"/{EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}/owner",
+                });
             })
             .ApplyDefaultEmPageBreadcrumbs(options =>
             {
-                options.DetailsBreadcrumbTitle = settings.GetModelPlaceholder(x => x.Name);
-                options.CurrentBreadcrumbTitle = settings.GetModelPlaceholder(x => x.Name);
+                options.DetailsBreadcrumbTitle = EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Name);
+                options.CurrentBreadcrumbTitle = EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Name);
             })
             .ApplyDefaultEmPageActions();
 
         settings.ModelActions.RemoveAt(1);
+        settings.ModelActions.Add(new EmPageAction
+        {
+            Order = 1,
+            Name = "Owner",
+            RelativeUrlFormat = $"/{EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}/owner",
+        });
 
         return await Task.FromResult(settings);
     }
