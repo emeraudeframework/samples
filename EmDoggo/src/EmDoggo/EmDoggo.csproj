@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Emeraude" Version="2.0.0.57-preview" />
-      <PackageReference Include="Emeraude.Defaults" Version="2.0.0.57-preview" />
+      <PackageReference Include="Emeraude" Version="2.0.0.59-preview" />
+      <PackageReference Include="Emeraude.Defaults" Version="2.0.0.59-preview" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

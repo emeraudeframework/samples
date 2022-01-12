@@ -1,8 +1,10 @@
+using System.Linq;
 using System.Threading.Tasks;
 using EmDoggo.Admin.EmPages.User;
 using Emeraude.Application.Admin.EmPages.Components.Mutators;
 using Emeraude.Application.Admin.EmPages.Components.Renderers;
 using Emeraude.Application.Admin.EmPages.Schema;
+using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Defaults.Extensions;
 
@@ -27,11 +29,15 @@ public class OwnerEmPageSchema : IEmPageSchema<OwnerEmPageModel>
                 indexView.PageActions.Add(new EmPageAction
                 {
                     Name = "Create",
-                    RelativeUrlFormat = $"/create?userId={EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}"
+                    RelativeUrlFormat = $"/create?{EmPagesConstants.ParentQueryParam}={EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}"
                 });
                 
                 indexView
                     .Use(x => x.Id, item =>
+                    {
+                        item.SetComponent<EmPageTextRenderer>();
+                    })
+                    .Use(x => x.Address, item =>
                     {
                         item.SetComponent<EmPageTextRenderer>();
                     });
@@ -40,6 +46,10 @@ public class OwnerEmPageSchema : IEmPageSchema<OwnerEmPageModel>
             {
                 detailsView
                     .Use(x => x.Id, item =>
+                    {
+                        item.SetComponent<EmPageTextRenderer>();
+                    })
+                    .Use(x => x.Address, item =>
                     {
                         item.SetComponent<EmPageTextRenderer>();
                     });
@@ -56,12 +66,19 @@ public class OwnerEmPageSchema : IEmPageSchema<OwnerEmPageModel>
                         item.Hidden = true;
                         item.SetComponent<EmPageHiddenQueryMutator>(component =>
                         {
-                            component.ReferenceKey = "userId";
+                            component.ReferenceKey = EmPagesConstants.ParentQueryParam;
                         });
                     });
             })
             .ApplyDefaultEmPageActions();
 
+        var editAction = settings.ModelActions.FirstOrDefault(x => x.Name == "Edit");
+        if (editAction != null)
+        {
+            editAction.RelativeUrlFormat +=
+                $"?{EmPagesConstants.ParentQueryParam}={EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}";
+        }
+        
         return settings;
     }
 }

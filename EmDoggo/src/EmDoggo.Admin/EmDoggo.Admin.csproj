@@ -5,9 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Emeraude.Application.Admin" Version="2.0.0.57-preview" />
-      <PackageReference Include="Emeraude.Application.Admin.EmPages" Version="2.0.0.57-preview" />
-      <PackageReference Include="Emeraude.Defaults" Version="2.0.0.57-preview" />
+      <PackageReference Include="Emeraude.Application.Admin" Version="2.0.0.59-preview" />
+      <PackageReference Include="Emeraude.Application.Admin.EmPages" Version="2.0.0.59-preview" />
+      <PackageReference Include="Emeraude.Defaults" Version="2.0.0.59-preview" />
     </ItemGroup>
 
     <ItemGroup>
