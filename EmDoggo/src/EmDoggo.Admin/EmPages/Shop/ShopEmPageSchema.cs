@@ -75,7 +75,6 @@ public class ShopEmPageSchema : IEmPageSchema<ShopEmPageModel>
                         .WithMessage("Minimum length of description must be 20");
                 });
             })
-            .ApplyDefaultEmPageBreadcrumbs()
             .ApplyDefaultEmPageActions();
 
         return settings;

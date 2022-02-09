@@ -25,19 +25,6 @@ public class InsightsEmPageSchema : IEmPageSchema<NullEmPageModel>
                 };
 
                 indexView.PageActions.Clear();
-                indexView.Breadcrumbs.Add(new EmPageBreadcrumb
-                {
-                    Order = 0,
-                    Title = "Dashboard",
-                    Href = "/admin",
-                    IsActive = true,
-                });
-                indexView.Breadcrumbs.Add(new EmPageBreadcrumb
-                {
-                    Order = 1,
-                    Title = "Insights",
-                    IsActive = false,
-                });
             });
 
         return await Task.FromResult(settings);

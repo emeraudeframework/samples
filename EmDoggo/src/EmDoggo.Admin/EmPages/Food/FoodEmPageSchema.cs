@@ -98,7 +98,6 @@ public class FoodEmPageSchema : IEmPageSchema<FoodEmPageModel>
                         item.SetComponent<EmPageDateMutator>();
                     });
             })
-            .ApplyDefaultEmPageBreadcrumbs()
             .ApplyDefaultEmPageActions();
 
         return settings;

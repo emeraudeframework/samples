@@ -99,29 +99,6 @@ public class UserEmPageSchema : IEmPageSchema<UserEmPageModel>
                         x => x.UserId,
                         x => x.Id,
                         EmPageFeatureReferenceDirection.FromSourceToParent);
-                    
-                    feature.Breadcrumbs.Add(new EmPageBreadcrumb
-                    {
-                        Title = settings.Title,
-                        IsActive = true,
-                        Href = $"/admin/{settings.Route}",
-                    });
-
-                    feature.Breadcrumbs.Add(new EmPageBreadcrumb
-                    {
-                        Title = EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Name),
-                        Order = 1,
-                        IsActive = true,
-                        Href = $"/admin/{settings.Route}/{EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}",
-                    });
-
-                    feature.Breadcrumbs.Add(new EmPageBreadcrumb
-                    {
-                        Title = "Owner",
-                        Order = 2,
-                        IsActive = false,
-                        Href = $"/admin/{settings.Route}/{EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}/owner",
-                    });
                 });
                 
                 detailsView.PageActions.Add(new EmPageAction
@@ -130,11 +107,6 @@ public class UserEmPageSchema : IEmPageSchema<UserEmPageModel>
                     Order = 2,
                     RelativeUrlFormat = $"/{EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Id)}/owner",
                 });
-            })
-            .ApplyDefaultEmPageBreadcrumbs(options =>
-            {
-                options.DetailsBreadcrumbTitle = EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Name);
-                options.CurrentBreadcrumbTitle = EmPagesPlaceholders.GetModelPlaceholder<UserEmPageModel>("users", x => x.Name);
             })
             .ApplyDefaultEmPageActions();
 
